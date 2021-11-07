@@ -52,12 +52,11 @@ def get_head_from_outputs(hyper_params, outputs):
     """
     total_labels = hyper_params["total_labels"]
     # +1 for ratio 1
-    # len_aspect_ratios = [len(x) + 1 for x in hyper_params["aspect_ratios"]]
+    len_aspect_ratios = [len(x) + 1 for x in hyper_params["aspect_ratios"]]
     labels_head = []
     boxes_head = []
     for i, output in enumerate(outputs):
-        # aspect_ratio = len_aspect_ratios[i]
-        aspect_ratio = [4,6,6,6,4,4]
+        aspect_ratio = len_aspect_ratios[i]
         labels_head.append(Conv2D(aspect_ratio * total_labels, (3, 3), padding="same", name="{}_conv_label_output".format(i+1))(output))
         boxes_head.append(Conv2D(aspect_ratio * 4, (3, 3), padding="same", name="{}_conv_boxes_output".format(i+1))(output))
     #

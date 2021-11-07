@@ -10,6 +10,7 @@ def preprocessing(image_data, final_height, final_width, augmentation_fn=None, e
         image_data = tensorflow dataset image_data
         final_height = final image height after resizing
         final_width = final image width after resizing
+
     outputs:
         img = (final_height, final_width, channels)
         gt_boxes = (gt_box_size, [y1, x1, y2, x2])
@@ -34,6 +35,7 @@ def get_dataset(name, split, data_dir="~/tensorflow_datasets"):
         name = name of the dataset, voc/2007, voc/2012, etc.
         split = data split string, should be one of ["train", "validation", "test"]
         data_dir = read/write path for tensorflow datasets
+
     outputs:
         dataset = tensorflow dataset split
         info = tensorflow dataset info
@@ -47,6 +49,7 @@ def get_total_item_size(info, split):
     inputs:
         info = tensorflow dataset info
         split = data split string, should be one of ["train", "validation", "test"]
+
     outputs:
         total_item_size = number of total items
     """
@@ -59,6 +62,7 @@ def get_labels(info):
     """Get label names list.
     inputs:
         info = tensorflow dataset info
+
     outputs:
         labels = [labels list]
     """

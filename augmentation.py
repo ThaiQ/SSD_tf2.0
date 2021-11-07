@@ -1,5 +1,5 @@
 import tensorflow as tf
-import bbox
+from utils import bbox_utils
 
 def apply(img, gt_boxes):
     """Randomly applying data augmentation methods to image and ground truth boxes.
@@ -146,7 +146,7 @@ def expand_image(img, gt_boxes, height, width):
     expanded_image = tf.where(expanded_image == -1, mean, expanded_image)
     #
     min_max = tf.stack([-pad_top, -pad_left, pad_bottom+height, pad_right+width], -1) / [height, width, height, width]
-    modified_gt_boxes = bbox.renormalize_bboxes_with_min_max(gt_boxes, min_max)
+    modified_gt_boxes = bbox_utils.renormalize_bboxes_with_min_max(gt_boxes, min_max)
     #
     return expanded_image, modified_gt_boxes
 
@@ -178,6 +178,6 @@ def patch(img, gt_boxes):
     #
     img = tf.slice(img, begin, size)
     img = tf.image.resize(img, (org_height, org_width))
-    gt_boxes = bbox.renormalize_bboxes_with_min_max(gt_boxes, new_boundaries[0, 0])
+    gt_boxes = bbox_utils.renormalize_bboxes_with_min_max(gt_boxes, new_boundaries[0, 0])
     #
     return img, gt_boxes

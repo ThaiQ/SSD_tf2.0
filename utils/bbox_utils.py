@@ -9,6 +9,7 @@ def non_max_suppression(pred_bboxes, pred_labels, **kwargs):
             total_labels should be 1 for binary operations like in rpn
         pred_labels = (batch_size, total_bboxes, total_labels)
         **kwargs = other parameters
+
     outputs:
         nms_boxes = (batch_size, max_detections, [y1, x1, y2, x2])
         nmsed_scores = (batch_size, max_detections)
@@ -32,6 +33,7 @@ def generate_iou_map(bboxes, gt_boxes, transpose_perm=[0, 2, 1]):
         gt_boxes = (dynamic_dimension, [y1, x1, y2, x2])
         transpose_perm = (transpose_perm_order)
             for 3d gt_boxes => [0, 2, 1]
+
     outputs:
         iou_map = (dynamic_dimension, total_gt_boxes)
             same rank with the gt_boxes
@@ -61,6 +63,7 @@ def get_bboxes_from_deltas(prior_boxes, deltas):
     inputs:
         prior_boxes = (total_bboxes, [y1, x1, y2, x2])
         deltas = (batch_size, total_bboxes, [delta_y, delta_x, delta_h, delta_w])
+
     outputs:
         final_boxes = (batch_size, total_bboxes, [y1, x1, y2, x2])
     """
@@ -86,6 +89,7 @@ def get_deltas_from_bboxes(bboxes, gt_boxes):
     inputs:
         bboxes = (total_bboxes, [y1, x1, y2, x2])
         gt_boxes = (batch_size, total_bboxes, [y1, x1, y2, x2])
+
     outputs:
         final_deltas = (batch_size, total_bboxes, [delta_y, delta_x, delta_h, delta_w])
     """
@@ -113,6 +117,7 @@ def get_scale_for_nth_feature_map(k, m=6, scale_min=0.2, scale_max=0.9):
     inputs:
         k = nth feature map for scale calculation
         m = length of all using feature maps for detections, 6 for ssd300
+
     outputs:
         scale = calculated scale value for given index
     """
@@ -125,6 +130,7 @@ def generate_base_prior_boxes(aspect_ratios, feature_map_index, total_feature_ma
         aspect_ratios = for all feature map shapes + 1 for ratio 1
         feature_map_index = nth feature maps for scale calculation
         total_feature_map = length of all using feature map for detections, 6 for ssd300
+
     outputs:
         base_prior_boxes = (prior_box_count, [y1, x1, y2, x2])
     """
@@ -146,6 +152,7 @@ def generate_prior_boxes(feature_map_shapes, aspect_ratios):
     inputs:
         feature_map_shapes = for all feature map output size
         aspect_ratios = for all feature map shapes + 1 for ratio 1
+
     outputs:
         prior_boxes = (total_prior_boxes, [y1, x1, y2, x2])
             these values in normalized format between [0, 1]
@@ -186,6 +193,7 @@ def normalize_bboxes(bboxes, height, width):
         bboxes = (batch_size, total_bboxes, [y1, x1, y2, x2])
         height = image height
         width = image width
+
     outputs:
         normalized_bboxes = (batch_size, total_bboxes, [y1, x1, y2, x2])
             in normalized form [0, 1]
@@ -203,6 +211,7 @@ def denormalize_bboxes(bboxes, height, width):
             in normalized form [0, 1]
         height = image height
         width = image width
+
     outputs:
         denormalized_bboxes = (batch_size, total_bboxes, [y1, x1, y2, x2])
     """

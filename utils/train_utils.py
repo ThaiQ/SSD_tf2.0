@@ -1,6 +1,6 @@
 import tensorflow as tf
 import math
-import bbox as bbox_utils
+from utils import bbox_utils
 
 SSD = {
     "vgg16": {
@@ -29,6 +29,7 @@ def get_hyper_params(backbone, **kwargs):
     """Generating hyper params in a dynamic way.
     inputs:
         **kwargs = any value could be updated in the hyper_params
+
     outputs:
         hyper_params = dictionary
     """
@@ -37,7 +38,6 @@ def get_hyper_params(backbone, **kwargs):
     hyper_params["neg_pos_ratio"] = 3
     hyper_params["loc_loss_alpha"] = 1
     hyper_params["variances"] = [0.1, 0.1, 0.2, 0.2]
-    hyper_params["total_labels"] = 20+1
     for key, value in kwargs.items():
         if key in hyper_params and value:
             hyper_params[key] = value
@@ -48,6 +48,7 @@ def scheduler(epoch):
     """Generating learning rate value for a given epoch.
     inputs:
         epoch = number of current epoch
+
     outputs:
         learning_rate = float learning rate value
     """
@@ -63,18 +64,20 @@ def get_step_size(total_items, batch_size):
     inputs:
         total_items = number of total items
         batch_size = number of batch size during training or validation
+
     outputs:
         step_size = number of step size for model training
     """
     return math.ceil(total_items / batch_size)
 
-def generator(dataset, prior_boxes, hyper_params=get_hyper_params("vgg16")):
+def generator(dataset, prior_boxes, hyper_params):
     """Tensorflow data generator for fit method, yielding inputs and outputs.
     inputs:
         dataset = tf.data.Dataset, PaddedBatchDataset
         prior_boxes = (total_prior_boxes, [y1, x1, y2, x2])
             these values in normalized format between [0, 1]
         hyper_params = dictionary
+
     outputs:
         yield inputs, outputs
     """
@@ -84,7 +87,7 @@ def generator(dataset, prior_boxes, hyper_params=get_hyper_params("vgg16")):
             actual_deltas, actual_labels = calculate_actual_outputs(prior_boxes, gt_boxes, gt_labels, hyper_params)
             yield img, (actual_deltas, actual_labels)
 
-def calculate_actual_outputs(prior_boxes, gt_boxes, gt_labels, hyper_params=get_hyper_params("vgg16")):
+def calculate_actual_outputs(prior_boxes, gt_boxes, gt_labels, hyper_params):
     """Calculate ssd actual output values.
     Batch operations supported.
     inputs:
@@ -94,6 +97,7 @@ def calculate_actual_outputs(prior_boxes, gt_boxes, gt_labels, hyper_params=get_
             these values in normalized format between [0, 1]
         gt_labels (batch_size, gt_box_size)
         hyper_params = dictionary
+
     outputs:
         bbox_deltas = (batch_size, total_bboxes, [delta_y, delta_x, delta_h, delta_w])
         bbox_labels = (batch_size, total_bboxes, [0,0,...,0])
