@@ -19,10 +19,10 @@ else:
 #
 hyper_params = train_utils.get_hyper_params(backbone)
 #
-train_data, info = data_utils.get_dataset("voc/2012", "train+validation")
-val_data, _ = data_utils.get_dataset("voc/2012", "test")
-train_total_items = data_utils.get_total_item_size(info, "train+validation")
-val_total_items = data_utils.get_total_item_size(info, "test")
+train_data, info = data_utils.get_dataset("voc/2007", "train")
+val_data, _ = data_utils.get_dataset("voc/2007", "validation")
+train_total_items = data_utils.get_total_item_size(info, "train")
+val_total_items = data_utils.get_total_item_size(info, "validation")
 
 labels = data_utils.get_labels(info)
 labels = ["bg"] + labels
