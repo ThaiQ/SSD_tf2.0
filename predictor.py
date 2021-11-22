@@ -7,10 +7,10 @@ if args.handle_gpu:
     io_utils.handle_gpu_compatibility()
 
 batch_size = 32
-evaluate = False
+evaluate = True
 use_custom_images = False
 custom_image_path = "data/images/"
-backbone = args.backbone
+backbone = "vgg16"
 io_utils.is_valid_backbone(backbone)
 #
 if backbone == "mobilenet_v2":
@@ -51,7 +51,12 @@ ssd_decoder_model = get_decoder_model(ssd_model, prior_boxes, hyper_params)
 step_size = train_utils.get_step_size(total_items, batch_size)
 pred_bboxes, pred_labels, pred_scores = ssd_decoder_model.predict(test_data, steps=step_size, verbose=1)
 
-if evaluate:
-    eval_utils.evaluate_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)
-else:
-    drawing_utils.draw_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)
+# if evaluate:
+#     eval_utils.evaluate_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)
+# else:
+#     drawing_utils.draw_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)
+
+
+eval_utils.evaluate_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)
+
+drawing_utils.draw_predictions(test_data, pred_bboxes, pred_labels, pred_scores, labels, batch_size)

@@ -1,4 +1,5 @@
 __pycache__
-data/*
-trained/*
-logs/*
+data/
+trained/
+logs/
+trained_1/
